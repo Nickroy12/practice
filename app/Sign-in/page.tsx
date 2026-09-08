@@ -1,6 +1,26 @@
-import React from "react";
-
+'use client'
+import React, { FormEvent } from "react";
+interface FormDataType {
+  name: string;
+  email: string;
+  password: string;
+}
 const SignIn = () => {
+
+const handleSubmit = (e: FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
+
+    const formData = new FormData(e.currentTarget)
+
+    const data: FormDataType = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    };
+    console.log(data)
+    e.currentTarget.reset()
+    
+}
   return (
     <div className=" flex min-h- py-30 items-center justify-center bg-amber-100 px-4">
       <div className="w-full max-w-md    rounded-2xl border border-dashed border-amber-600 shadow-lg  px-2">
@@ -13,8 +33,16 @@ const SignIn = () => {
           Welcome back! Please sign in to your account.
         </p>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           
+          {/* Email */}
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              Name
+            </label>
+
+            <input type="name" id="name" name="name" placeholder="Enter your name" className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500" required/>
+          </div>
           {/* Email */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
