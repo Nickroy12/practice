@@ -3,31 +3,34 @@
 import React, { FormEvent } from "react";
 import { authClient } from "../lib/auth-client";
 
-
 interface FormDataType {
-  
+  name: string;
   email: string;
   password: string;
 }
 
-const SignIn = () => {
+const SignUp = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
     const data: FormDataType = {
+      name: formData.get("name") as string,
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };
 
     console.log(data);
 
-    const { data: authData, error } = await authClient.signIn.email({
-      email: data.email,
-      password: data.password,
-      callbackURL:'/'
-    });
+    const { data: authData, error } =
+      await authClient.signUp.email({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        callbackURL: "/",
+      });
 
     if (error) {
       console.error(error.message);
@@ -36,22 +39,39 @@ const SignIn = () => {
 
     console.log("Signup successful:", authData);
 
-    e.currentTarget.reset();
+    form.reset();
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-amber-100 px-4 py-10">
       <div className="w-full max-w-md rounded-2xl border border-dashed border-amber-600 px-6 py-8 shadow-lg">
         <h1 className="mb-2 text-center text-3xl font-bold text-gray-800">
-          Sign In
+          Sign Up
         </h1>
 
         <p className="mb-8 text-center text-gray-500">
-         Welcome Back !
+          Create your account.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-    
+          {/* Name */}
+          <div>
+            <label
+              htmlFor="name"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter your name"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500"
+              required
+            />
+          </div>
 
           {/* Email */}
           <div>
@@ -95,7 +115,7 @@ const SignIn = () => {
             type="submit"
             className="w-full rounded-lg bg-amber-600 py-3 font-semibold text-white transition duration-300 hover:bg-amber-700"
           >
-            Sign In
+            Sign Up
           </button>
         </form>
 
@@ -113,4 +133,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
