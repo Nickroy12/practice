@@ -1,9 +1,13 @@
+import Hero from "@/components/Home/Hero";
+import ServicesSection from "@/components/Home/ServicesSection";
+import StatsSection from "@/components/Home/StatsSection";
+
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <div className="h-[200vh] flex justify-center items-center">
-        <h1 className="text-6xl">hi</h1>
-      </div>
+      <Hero/>
+      <StatsSection/>
+      <ServicesSection/>
     </main>
   )
 }
