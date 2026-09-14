@@ -1,6 +1,5 @@
 "use client";
 
-import { authClient, useSession } from "@/app/lib/auth-client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -24,7 +23,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const pathname = usePathname();
-  const { data, isPending } = useSession();
 
   // Handle scroll detection for sticky navbar background styling
   useEffect(() => {
@@ -49,11 +47,6 @@ const Navbar = () => {
     };
   }, [isOpen]);
 
-  const handleLogout = async () => {
-    await authClient.signOut();
-    window.location.reload();
-  };
-
   return (
     <nav
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
@@ -64,9 +57,9 @@ const Navbar = () => {
     >
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4">
         {/* Logo */}
-       <div className="bg-white text-orange-600 font-extrabold text-xl px-6 py-2 rounded-lg w-fit shadow-md">
-              LOGO
-            </div>
+        <div className="bg-white text-orange-600 font-extrabold text-xl px-6 py-2 rounded-lg w-fit shadow-md">
+          LOGO
+        </div>
 
         {/* Desktop Navigation */}
         <ul className="hidden gap-6 md:flex">
@@ -92,9 +85,20 @@ const Navbar = () => {
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
-          {/* Desktop Auth */}
+          {/* Desktop Auth Buttons */}
           <div className="hidden items-center gap-3 md:flex">
-            <AuthButtons pending={isPending} user={data?.user} onLogout={handleLogout} />
+            <Link
+              href="/SignUp"
+              className="rounded-xl border border-amber-600 px-5 py-2 text-sm font-medium text-black transition hover:bg-amber-100"
+            >
+              Sign Up
+            </Link>
+            <Link
+              href="/Sign-in"
+              className="rounded-xl bg-gradient-to-r from-orange-500 to-amber-700 px-5 py-2 text-sm font-medium text-white transition hover:opacity-90"
+            >
+              Sign In
+            </Link>
           </div>
 
           {/* Hamburger Toggle Button */}
@@ -145,71 +149,24 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile Auth */}
-        <div className="mt-auto border-t border-amber-200 pt-5">
-          <AuthButtons
-            pending={isPending}
-            user={data?.user}
-            onLogout={handleLogout}
-            isMobile
-            onMobileClose={() => setIsOpen(false)}
-          />
+        <div className="mt-auto flex flex-col gap-3 border-t border-amber-200 pt-5 text-center">
+          <Link
+            href="/SignUp"
+            onClick={() => setIsOpen(false)}
+            className="rounded-xl border border-amber-600 px-5 py-2 text-sm font-medium text-black transition hover:bg-amber-100"
+          >
+            Sign Up
+          </Link>
+          <Link
+            href="/Sign-in"
+            onClick={() => setIsOpen(false)}
+            className="rounded-xl bg-gradient-to-r from-orange-500 to-amber-700 px-5 py-2 text-sm font-medium text-white transition hover:opacity-90"
+          >
+            Sign In
+          </Link>
         </div>
       </div>
     </nav>
-  );
-};
-
-/* Auth Component */
-interface AuthButtonsProps {
-  pending: boolean;
-  user?: { name?: string | null };
-  onLogout: () => void;
-  isMobile?: boolean;
-  onMobileClose?: () => void;
-}
-
-const AuthButtons = ({
-  pending,
-  user,
-  onLogout,
-  isMobile = false,
-  onMobileClose,
-}: AuthButtonsProps) => {
-  if (pending) {
-    return <span className="text-sm text-gray-600">Loading...</span>;
-  }
-
-  if (user) {
-    return (
-      <div className={`flex ${isMobile ? "flex-col gap-3" : "items-center gap-3"}`}>
-        <span className="font-medium text-black">Hi, {user.name}</span>
-        <button
-          onClick={onLogout}
-          className="rounded-full border border-amber-600 px-4 py-2 text-sm text-black transition hover:bg-amber-200"
-        >
-          Logout
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className={`flex ${isMobile ? "flex-col gap-3 text-center" : "items-center gap-3"}`}>
-      <Link
-        href="/Sign-up"
-        onClick={onMobileClose}
-        className="rounded-xl border border-amber-600 px-5 py-2 text-sm font-medium text-black transition hover:bg-amber-100"
-      >
-        Sign Up
-      </Link>
-      <Link
-        href="/Sign-in"
-        onClick={onMobileClose}
-        className="rounded-xl bg-gradient-to-r from-orange-500 to-amber-700 px-5 py-2 text-sm font-medium text-white transition hover:opacity-90"
-      >
-        Sign In
-      </Link>
-    </div>
   );
 };
 

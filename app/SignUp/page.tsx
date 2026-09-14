@@ -1,7 +1,6 @@
 "use client";
 
 import React, { FormEvent } from "react";
-import { authClient } from "../lib/auth-client";
 
 interface FormDataType {
   name: string;
@@ -22,23 +21,7 @@ const SignUp = () => {
       password: formData.get("password") as string,
     };
 
-    console.log(data);
-
-    const { data: authData, error } =
-      await authClient.signUp.email({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        callbackURL: "/",
-      });
-
-    if (error) {
-      console.error(error.message);
-      return;
-    }
-
-    console.log("Signup successful:", authData);
-
+    console.log("Sign up submitted:", data);
     form.reset();
   };
 
@@ -122,7 +105,7 @@ const SignUp = () => {
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
           <a
-            href="/signin"
+            href="/Sign-in"
             className="font-semibold text-blue-600 hover:underline"
           >
             Sign In

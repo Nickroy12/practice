@@ -1,6 +1,9 @@
+import { NextResponse } from "next/server";
 
-import { auth } from "@/app/lib/auth";
-import { toNextJsHandler } from "better-auth/next-js";
+export async function GET() {
+  return NextResponse.json({ message: "Auth endpoint disabled" });
+}
 
-export const { POST, GET } = toNextJsHandler(auth);
-
+export async function POST() {
+  return NextResponse.json({ message: "Auth endpoint disabled" });
+}
