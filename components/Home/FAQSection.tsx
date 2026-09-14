@@ -54,9 +54,9 @@ const faqData = [
 ];
 
 export default function FAQSection() {
-  const [openId, setOpenId] = useState(1);
+  const [openId, setOpenId] = useState<number | null>(1);
 
-  const toggleFAQ = (id) => {
+  const toggleFAQ = (id: number) => {
     setOpenId(openId === id ? null : id);
   };
 
@@ -117,7 +117,19 @@ export default function FAQSection() {
   );
 }
 
-function FAQCard({ faq, isOpen, onToggle }) {
+interface FAQItem {
+  id: number;
+  question: string;
+  answer: string;
+}
+
+interface FAQCardProps {
+  faq: FAQItem;
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+function FAQCard({ faq, isOpen, onToggle }: FAQCardProps) {
   return (
     <motion.div
       layout

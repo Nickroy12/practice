@@ -24,7 +24,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const pathname = usePathname();
-  const { data, pending } = useSession();
+  const { data, isPending } = useSession();
 
   // Handle scroll detection for sticky navbar background styling
   useEffect(() => {
@@ -94,7 +94,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           {/* Desktop Auth */}
           <div className="hidden items-center gap-3 md:flex">
-            <AuthButtons pending={pending} user={data?.user} onLogout={handleLogout} />
+            <AuthButtons pending={isPending} user={data?.user} onLogout={handleLogout} />
           </div>
 
           {/* Hamburger Toggle Button */}
@@ -147,7 +147,7 @@ const Navbar = () => {
         {/* Mobile Auth */}
         <div className="mt-auto border-t border-amber-200 pt-5">
           <AuthButtons
-            pending={pending}
+            pending={isPending}
             user={data?.user}
             onLogout={handleLogout}
             isMobile

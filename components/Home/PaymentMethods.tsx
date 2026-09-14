@@ -123,7 +123,7 @@ export default function PaymentMethods() {
                 transform: 'translate(-50%, 50%)',
                 '--radius': 'min(38vw, 220px)',
                 '--offset-y': '20px',
-              }}
+              } as React.CSSProperties}
             >
               <img
                 src={icon.src}
